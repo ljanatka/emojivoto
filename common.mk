@@ -1,4 +1,4 @@
-export IMAGE_TAG := v1
+export IMAGE_TAG := v9
 
 .PHONY: package protoc test
 
@@ -16,7 +16,7 @@ protoc:
 package: protoc compile build-container
 
 build-container:
-	docker build .. -t "ljanatka/$(svc_name):$(IMAGE_TAG)" --build-arg svc_name=$(svc_name)
+	docker build .. -t "buoyantio/$(svc_name):$(IMAGE_TAG)" --build-arg svc_name=$(svc_name)
 
 compile:
 	GOOS=linux go build -v -o $(target_dir)/$(svc_name) cmd/server.go
