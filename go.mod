@@ -7,5 +7,5 @@ require (
 	github.com/golang/protobuf v1.3.2
 	github.com/prometheus/client_golang v1.2.1
 	go.opencensus.io v0.22.1
-	google.golang.org/grpc v1.22.0
+	google.golang.org/grpc v1.27.0
 )

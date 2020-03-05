@@ -1,3 +1,22 @@
+# Nase
+
+Vše volat z rootu tohoto projektu
+
+build image: 
+docker build . --file Dockerfile-mine --tag ljanatka/emojivoto-voting-svc:v1 --build-arg svc_name=emojivoto-voting-svc
+docker build . --file Dockerfile-mine --tag ljanatka/emojivoto-web:v1 --build-arg svc_name=emojivoto-web
+
+docker push ljanatka/emojivoto-voting-svc:v1
+docker push ljanatka/emojivoto-web:v1
+
+
+kubectl create namespace alfa
+kubectl annotate namespace alfa linkerd.io/inject=enabled
+    kubectl apply -f ./kustomize/deployment -n alfa
+
+Uprav soubor ./kustomize/ingress.yaml a pak kubectl apply -f ./kustomize/ingress.yaml
+
+
 # Emoji.voto
 
 A microservice application that allows users to vote for their favorite emoji,

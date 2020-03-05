@@ -13,10 +13,10 @@ clean:
 protoc:
 	protoc -I .. ../proto/*.proto --go_out=plugins=grpc:gen
 
-package: protoc compile build-container
+package: protoc compile
 
 build-container:
-	docker build .. -t "buoyantio/$(svc_name):$(IMAGE_TAG)" --build-arg svc_name=$(svc_name)
+	docker build .. -t "ljanatka/$(svc_name):$(IMAGE_TAG)" --build-arg svc_name=$(svc_name)
 
 compile:
 	GOOS=linux go build -v -o $(target_dir)/$(svc_name) cmd/server.go

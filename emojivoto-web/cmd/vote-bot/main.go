@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"os"
 	"time"
+	"strconv"
 
 	"contrib.go.opencensus.io/exporter/ocagent"
 	"go.opencensus.io/plugin/ochttp"
@@ -41,6 +42,15 @@ func main() {
 		log.Fatalf("WEB_HOST environment variable must me set")
 	}
 
+	rate := os.Getenv("RATE_IN_MILLIS")
+	if rate == "" {
+	    log.Fatalf("RATE_IN_MILLIS environment variable must me set")
+	}
+	rateNumber, err := strconv.Atoi(rate)
+    if err != nil {
+        log.Fatalf("RATE_IN_MILLIS environment variable must me integer")
+     }
+
 	oce, err := ocagent.NewExporter(
 		ocagent.WithInsecure(),
 		ocagent.WithReconnectionPeriod(5*time.Second),
@@ -58,7 +68,7 @@ func main() {
 	}
 
 	for {
-		time.Sleep(500*time.Millisecond)
+		time.Sleep(time.Duration(rateNumber)*time.Millisecond)
 
 		// Get the list of available shortcodes
 		shortcodes, err := shortcodes(webUrl)

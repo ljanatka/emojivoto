@@ -1,0 +1,29 @@
+FROM golang:1.14
+COPY . ./emojivoto
+RUN apt-get update -y && \
+    apt-get install -y unzip
+RUN go get -u github.com/golang/protobuf/protoc-gen-go
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt update -y && \
+    apt install yarn -y && \
+    apt install docker.io -y
+
+
+RUN PROTOC_ZIP=protoc-3.7.0-linux-x86_64.zip && \
+    curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.7.0/$PROTOC_ZIP && \
+    unzip -o $PROTOC_ZIP -d /usr/local bin/protoc && \
+    unzip -o $PROTOC_ZIP -d /usr/local 'include/*' && \
+    rm -f $PROTOC_ZIP
+
+RUN cd emojivoto && make build
+
+FROM buoyantio/emojivoto-svc-base:v9
+
+ARG svc_name
+
+COPY --from=0 /go/emojivoto/$svc_name/target/ /usr/local/bin/
+
+# ARG variables arent available for ENTRYPOINT
+ENV SVC_NAME $svc_name
+ENTRYPOINT cd /usr/local/bin && $SVC_NAME

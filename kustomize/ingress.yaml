@@ -1,0 +1,16 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: web-ingress
+  namespace: alfa
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+    - host: web.alfa.itchaos.cz
+      http:
+        paths:
+          - backend:
+              serviceName: web-svc
+              servicePort: 80
