@@ -12,7 +12,7 @@ docker push ljanatka/emojivoto-web:v1
 
 kubectl create namespace alfa
 kubectl annotate namespace alfa linkerd.io/inject=enabled
-    kubectl apply -f ./kustomize/deployment -n alfa
+kubectl apply -f ./kustomize/deployment -n alfa
 
 Uprav soubor ./kustomize/ingress.yaml a pak kubectl apply -f ./kustomize/ingress.yaml
 
